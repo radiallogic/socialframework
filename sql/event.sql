@@ -1,0 +1,9 @@
+
+CREATE TABLE IF NOT EXISTS events
+(
+    id INT NOT NULL AUTO_INCREMENT,
+    code VARCHAR(128) NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE (code)
+)
+ENGINE=InnoDB;
