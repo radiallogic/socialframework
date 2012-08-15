@@ -4,9 +4,6 @@ class userModel extends genericModel{
     
     public $fbid;
     public $id;
-    public $atitude;
-    public $into;
-    public $ability;
     
     public function load($id){
         $res = $this->_db->query('SELECT * FROM users WHERE fbid = ' . $id . '');
@@ -15,10 +12,6 @@ class userModel extends genericModel{
         
         $this->id = $data['id'];
         $this->fbid = $data['fbid'];
-        $this->attitude = $data['fbid'];
-        
-        $this->into = explode(',', $data['into']);
-        $this->ability = explode(',', $data['ability']);
         
     }
     

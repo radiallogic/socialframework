@@ -26,12 +26,39 @@
 
 class eventModel extends genericModel{
     
-    public function load(){
-        
+    public $event_id;
+    
+    public function __construct(){
+        $this->facebook = new Facebook($config->fbconfig);
     }
     
-    public function save(){
+    public function inviteUser($user_id){
+        // check user isn't invited
+        $ret_val = $facebook->api($this->event_id . '/invited/' . $user_id, 'GET');
         
+        if(!$ret_val) {
+            // if not invited, invite user
+            $ret_val = $facebook->api($this->event_id . "/invited/" . $user_id, 'POST');
+        }else{
+            //log already invited
+        }
+    }
+    
+    public function createEvent(){
+        // Create an event
+        $ret_obj = $facebook->api('/me/events', 'POST', array(
+                                    'name' => $event_name,
+                                    'start_time' => $event_start,
+                                    'privacy_type' => $event_privacy
+                                 ));
+
+        if(isset($ret_obj['id'])) {
+            // Success
+            $event_id = $ret_obj['id'];
+            printMsg('Event ID: ' . $event_id);
+        } else {
+            printMsg("Couldn't create event.");
+        }
     }
 }
 

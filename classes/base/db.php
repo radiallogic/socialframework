@@ -19,20 +19,57 @@ class db{
         }
     }
     
-    public function query($query){
-        
-        //TODO: escape $query
-        
-        if ($this->_mysqli->query("INSERT INTO coupons SET code = '" . $code. "' ") === TRUE) {
-            return true;
-        }else{
-            return false;
+    public function query($query, array $arguments, $data = True){
+        if(substr_count($query, '?') != count($arguments) ){
+            //throw exception
         }
-
+        
+        list($query, $arguments) = $this->parseArgs($query, $arguments);
+        
+        if($data){
+            return $this->res2data($this->_mysqli->query($query) );
+        }else{
+            return $this->_mysqli->query($query);
+        }
+    }
+    
+    protected function parseArgs($query, $arguments){
+        foreach($arguments as $arg){
+            $arg = $this->_mysqli->escape_string($arg);
+            $i = strpos($query,'?');
+            $query = substr_replace($query,$arg,$i);
+        }
+        return array($query, $arguments);
+    }
+    
+    public function raw($query){
+        return $this->_mysqli->query($query);
+    }
+    
+    public function res2data($res){
+        //$res = $mysqli->use_result();
+        $data = array();
+        while ($row = $res->fetch_assoc() ) {
+            $data[] = $row;
+        }
+        return $data;
     }
     
     public function __destruct(){
         $this->_mysqli->close();
+    }
+    
+    public function insert($table, $args){
+        $query = 'INSERT INTO ' .
+            $this->_mysqli->escape_string($table) .
+            ' SET ';
+        foreach($args as $key => $var){
+            $var = $this->_mysqli->escape_string($var);
+            $query = $key . " = '" . $var . "',";
+        }
+        $query = substr($query,0,strlen($query) -1 );
+        
+        return $this->_mysqli->query($query);
     }
 }
 ?>
