@@ -71,5 +71,18 @@ class db{
         
         return $this->_mysqli->query($query);
     }
+    
+    public function exists($value, $column, $table){
+        $query = 'SELECT * FROM ' . $this->_mysqli->escape_string($table) .
+            'WHERE ' . $this->_mysqli->escape_string($column) .
+            ' = \'' . $this->_mysqli->escape_string($value) . '\'';
+        
+        $this->_mysqli->query($query);
+        if($this->_mysqli->affected_rows > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
 ?>

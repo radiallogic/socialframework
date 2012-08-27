@@ -8,6 +8,7 @@ abstract class genericModel{
         $this->_db = new db();
     }
     
+    // These force code out of constructors and insure code granularity 
     abstract public function load();
     abstract public function save();
     

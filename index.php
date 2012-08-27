@@ -1,11 +1,6 @@
 <?php
-//
-//define('__ROOT__', dirname(dirname(__FILE__))); 
-//require_once(__ROOT__.'/config.php'); 
 
-require_once('classes/base/config.php');
-require_once('classes/base/db.php');
-require_once('/libs/Smarty-3.1.11/libs/Smarty.class.php');
+require_once('classes/base/requires.php');
 
 $config = new config();
 $config = new db();
@@ -38,13 +33,13 @@ $config = new db();
         $db->insert('users', array('fbid' => $user_id) );
     }
     
-    require_once ('controllers/mainController.php');
+    //require_once ('controllers/mainController.php');
     $main = new main();
     $main->display();
     
     if(!empty($data) && $data[0]['promoter'] == 'True'){
         //show admin panel
-        require_once ('controllers/adminController.php');
+        //require_once ('controllers/adminController.php');
         $main = new admin();
         $main->display();
     }

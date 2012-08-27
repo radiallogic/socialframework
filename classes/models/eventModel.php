@@ -27,8 +27,10 @@
 class eventModel extends genericModel{
     
     public $event_id;
+    public $event_data;
     
     public function __construct(){
+        parent::__construct();
         $this->facebook = new Facebook($config->fbconfig);
     }
     
@@ -44,21 +46,55 @@ class eventModel extends genericModel{
         }
     }
     
-    public function createEvent(){
-        // Create an event
-        $ret_obj = $facebook->api('/me/events', 'POST', array(
-                                    'name' => $event_name,
-                                    'start_time' => $event_start,
-                                    'privacy_type' => $event_privacy
-                                 ));
-
-        if(isset($ret_obj['id'])) {
-            // Success
-            $event_id = $ret_obj['id'];
-            printMsg('Event ID: ' . $event_id);
-        } else {
-            printMsg("Couldn't create event.");
+    //public function createEvent(){
+    //    //creates a fb event on the graph api
+    //    
+    //    
+    //    // Create an event
+    //    $ret_obj = $facebook->api('/me/events', 'POST', array(
+    //                                'name' => $event_name,
+    //                                'start_time' => $event_start,
+    //                                'privacy_type' => $event_privacy
+    //                             ));
+    //
+    //    if(isset($ret_obj['id'])) {
+    //        // Success
+    //        $event_id = $ret_obj['id'];
+    //        printMsg('Event ID: ' . $event_id);
+    //    } else {
+    //        printMsg("Couldn't create event.");
+    //    }
+    //}
+    
+    public function load($event_id){
+        $this->event_data = $facebook->api('/' . $event_id);
+        
+        if($this->event_data){
+            return true;
+        }else{
+            return false;
         }
+    }
+    
+    public function save(){
+        print('Not implemented');
+    }
+    
+    /** function adds event to the apps event database */
+    public function add($event_id){
+        // does event exist on fb?
+        if(!$this->load($event_id)){
+            //if no return false
+            return false;
+        }
+        // does event exist in the database?
+        if(!$this->_db->exists($event_id,'fbid','events') ){
+            // doesn't exist so add
+            $this->_db->insert('events',array('fbid' => $event_id) );
+        }
+        //returning true even if event already exists won't duplicate invites
+        // because of later checks but will allow new users to be invited.
+        return true;
     }
 }
 
