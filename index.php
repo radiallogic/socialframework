@@ -3,7 +3,7 @@
 require_once('classes/base/requires.php');
 
 $config = new config();
-$config = new db();
+$db = new db();
 
     $auth_url = "https://www.facebook.com/dialog/oauth?client_id=" 
            . $config->fbAppId . "&redirect_uri=" . urlencode($config->canvas_page);

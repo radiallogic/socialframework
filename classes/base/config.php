@@ -18,7 +18,7 @@ class config {
         $this->dbUser = 'root';
         $this->dbPass = 'toortoor';
         $this->dbHost = '127.0.0.1';
-        $this->dbName = 'elementsOfRisk';
+        $this->dbName = 'bristolHouse';
         
         $this->fbConfig();
         
@@ -27,9 +27,9 @@ class config {
     }
     
     public function fbConfig(){
-        $this->fbName = 'ElementsOfRisk';
-        $this->fbAppId = '433813109972120';
-        $this->fbAppSecret = '701a60181133b16402d0af23bb6bb139';
+        $this->fbName = 'bristolHouse';
+        $this->fbAppId = '282683241837527';
+        $this->fbAppSecret = 'a978c55a8539fc3c20bd01beee8cd247';
         
         $this->fbconfig = array($this->fbAppId, $this->fbAppSecret); // in the format needed for the fb sdk
     }

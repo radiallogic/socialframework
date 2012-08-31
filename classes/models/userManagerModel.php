@@ -4,7 +4,7 @@ class userMangerModel extends genericModel{
     
     public $users;
     
-    public function load(){
+    public function load($i = 0 ){
         $this->users = array();
         
         $res = $this->_db->raw('SELECT * FROM users');

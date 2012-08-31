@@ -8,7 +8,7 @@ class eventManger extends genericModel{
 
     }
     
-    public function load(){
+    public function load($id = 0){
         $this->users = array();
         parent::__construct();
         

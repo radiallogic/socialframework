@@ -9,7 +9,7 @@ abstract class genericModel{
     }
     
     // These force code out of constructors and insure code granularity 
-    abstract public function load();
+    abstract public function load($id);
     abstract public function save();
     
 }
