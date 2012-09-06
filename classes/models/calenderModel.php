@@ -102,7 +102,7 @@ class calender{
     function getArray(){
         $t = $this->calender;
         $t[] = $this->week;
-        print_r($t);
+        //print_r($t);
         return $t;
     }
 }

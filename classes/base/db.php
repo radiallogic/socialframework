@@ -1,7 +1,6 @@
 <?php
 class db{
     protected $_config;
-    
     protected $_mysqli;
     
     public function __construct(){
@@ -65,10 +64,10 @@ class db{
             ' SET ';
         foreach($args as $key => $var){
             $var = $this->_mysqli->escape_string($var);
-            $query = $key . " = '" . $var . "',";
+            $query .= $key . " = '" . $var . "',";
         }
         $query = substr($query,0,strlen($query) -1 );
-        
+        var_dump($query);
         return $this->_mysqli->query($query);
     }
     

@@ -22,8 +22,8 @@ class config {
         
         $this->fbConfig();
         
-        $this->url = 'http://www.radiallogic.co.uk/bristolhouse/';
-        $this->canvaspage = '';
+        $this->url = 'http://127.0.0.1:8080/bristolHouse/';
+        $this->canvaspage = $this->url;
     }
     
     public function fbConfig(){

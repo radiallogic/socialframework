@@ -9,18 +9,21 @@ class admin extends genericController{
     public $eventManagerModel;
     
     public function __construct(){
+        parent::__construct();
         $this->userMM = new userMangerModel();
     }
     
     
     public function display(){
-        if($_REQUEST['kind'] == 'admin'){
+        if(isset($_REQUEST['kind']) && $_REQUEST['kind'] == 'admin'){
+            print('here');
             $this->add();
         }
         
+        var_dump($_REQUEST);
         
         // template includes admin.tpl if this is true.
-        $this->smarty->assign('admin', 'true');
+        $this->_smarty->assign('admin', 'true');
     }
     
     public function add(){
@@ -40,10 +43,10 @@ class admin extends genericController{
             }
             
             // set message to everything is ok!
-            $this->smarty->assign('admin_message', 'everything is ok!');
+            $this->_smarty->assign('admin_message', 'everything is ok!');
         }else{
             // set message to event not found / couldn't be added to application
-            $this->smarty->assign('admin_message', 'event not found / couldn\'t be added to application');
+            $this->_smarty->assign('admin_message', 'event not found / couldn\'t be added to application');
         }
     }
 

@@ -5,7 +5,6 @@ class main extends genericController{
     public function __construct(){
         parent::__construct();
         $this->eventManager = new eventManager();
-        
     }
     
     public function display(){
@@ -16,8 +15,7 @@ class main extends genericController{
         $calender = new calender($time);
         $calender->build();
     
-        $this->smarty->assign('calender', $calender->getArray() );
-        //$this->smarty->display('calender.tpl');
+        $this->_smarty->assign('calender', $calender->getArray() );
     }
     
 }

@@ -1,6 +1,6 @@
 <?php
 
-class eventManger extends genericModel{
+class eventManager extends genericModel{
     
     public $events;
     

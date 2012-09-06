@@ -9,7 +9,7 @@
 
 	<title>timetable</title>
 	
-	<script type="text/JavaScript" src="../jquery-1.6.1.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 	<script type="text/JavaScript">
 	        
 		$(document).ready( function(){
@@ -42,9 +42,3 @@
 <body> 
     
     <div id="content">
-        <div id="intro">
-            <div id="pageheader">
-                    <div id="title"><b>timetable</b></div>
-		    <div id="byline"></div>
-            </div>
-        </div>

@@ -1,17 +1,14 @@
 <?php
-
 require_once('classes/base/requires.php');
 
 $config = new config();
 $db = new db();
 
     $auth_url = "https://www.facebook.com/dialog/oauth?client_id=" 
-           . $config->fbAppId . "&redirect_uri=" . urlencode($config->canvas_page);
+           . $config->fbAppId . "&redirect_uri=" . urlencode($config->canvaspage);
 
     $signed_request = $_REQUEST["signed_request"];
-
     list($encoded_sig, $payload) = explode('.', $signed_request, 2); 
-
     $data = json_decode(base64_decode(strtr($payload, '-_', '+/')), true);
 
     if (empty($data["user_id"])) {
@@ -25,21 +22,26 @@ $db = new db();
     $user_id = $facebook->getUser();
     
     //check new user
-    $res = $db->raw('SELECT * FROM users WHERE fbid = "' . $user_id . '" limit 1');
-    $data = $db->res2data($res);
+    $res = $db->raw('SELECT * FROM users WHERE fbid = "' . $data['user_id'] . '" limit 1');
+    $dbdata = $db->res2data($res);
     
-    if(empty($data) ){
+    //var_dump($dbdata);
+    
+    if(empty($dbdata) ){
+        print('insert');
         // add to db
-        $db->insert('users', array('fbid' => $user_id) );
+        $db->insert('users', array('fbid' => $data['user_id']) );
     }
     
-    //require_once ('controllers/mainController.php');
     $main = new main();
     $main->display();
     
-    if(!empty($data) && $data[0]['promoter'] == 'True'){
+    if(!empty($dbdata) && $dbdata[0]['promoter'] == 'yes'){
         //show admin panel
-        //require_once ('controllers/adminController.php');
+        print('admin');
         $main = new admin();
         $main->display();
     }
+
+    $smarty = smartytube::getSmartyObj();
+    $smarty->display('index.tpl');
