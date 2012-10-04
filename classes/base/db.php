@@ -67,7 +67,7 @@ class db{
             $query .= $key . " = '" . $var . "',";
         }
         $query = substr($query,0,strlen($query) -1 );
-        var_dump($query);
+        //var_dump($query);
         return $this->_mysqli->query($query);
     }
     

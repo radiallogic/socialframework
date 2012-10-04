@@ -8,7 +8,8 @@ class admin extends genericController{
     public $event;
     public $eventManagerModel;
     
-    public function __construct(){
+    public function __construct($facebook){
+        $this->facebook = $facebook;
         parent::__construct();
         $this->userMM = new userMangerModel();
     }
@@ -20,34 +21,42 @@ class admin extends genericController{
             $this->add();
         }
         
-        var_dump($_REQUEST);
-        
         // template includes admin.tpl if this is true.
         $this->_smarty->assign('admin', 'true');
     }
     
     public function add(){
+        var_dump($_REQUEST);
+        
         // get event id
-        $event_id = preg_match('/[0-9]+$/',$_REQUEST['text'] );
+        $matches = array();
+        $ret = preg_match('/https\:\/\/www\.facebook\.com\/events\/([0-9]+)/',$_REQUEST['url'], $matches);
         
-        //get all users
-        $userModel = new userMangerModel();
-        $userModel->load();
-        
-        //create event object
-        $event = new eventModel();
-        
-        if($event->add($event_id) ){
-            foreach($userModel->users as $user){
-                $event->inviteUser($user);
-            }
+        $event_id = $matches[1];
+        if($ret){
+            //get all users
+            $userModel = new userMangerModel();
+            $userModel->load();
             
-            // set message to everything is ok!
-            $this->_smarty->assign('admin_message', 'everything is ok!');
+            //create event object
+            $event = new eventModel($this->facebook);
+            
+            if($event->add($event_id) ){
+                foreach($userModel->users as $user){
+                    $event->inviteUser($user);
+                }
+                
+                // set message to everything is ok!
+                $this->_smarty->assign('admin_message', 'everything is ok!');
+            }else{
+                // set message to event not found / couldn't be added to application
+                $this->_smarty->assign('admin_message', 'event not found / couldn\'t be added to application');
+            }   
         }else{
-            // set message to event not found / couldn't be added to application
-            $this->_smarty->assign('admin_message', 'event not found / couldn\'t be added to application');
+            $this->_smarty->assign('admin_message', 'please enter a valid event url');
         }
+        
+        
     }
 
 

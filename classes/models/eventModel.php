@@ -29,18 +29,21 @@ class eventModel extends genericModel{
     public $event_id;
     public $event_data;
     
-    public function __construct(){
+    public function __construct($facebook){
         parent::__construct();
-        $this->facebook = new Facebook($config->fbconfig);
+        //$config = new config();
+        $this->facebook = $facebook;//new Facebook($config->fbconfig);
+        error_log($this->facebook->getAccessToken() );
     }
     
     public function inviteUser($user_id){
         // check user isn't invited
-        $ret_val = $facebook->api($this->event_id . '/invited/' . $user_id, 'GET');
+        $path = $this->event_id . '/invited/' . $user_id['fbid'];
+        $ret_val = $this->facebook->api($path, 'GET');
         
         if(!$ret_val) {
             // if not invited, invite user
-            $ret_val = $facebook->api($this->event_id . "/invited/" . $user_id, 'POST');
+            $ret_val = $this->facebook->api($this->event_id . "/invited/" . $user_id['fbid'], 'POST');
         }else{
             //log already invited
         }
@@ -67,7 +70,7 @@ class eventModel extends genericModel{
     //}
     
     public function load($event_id){
-        $this->event_data = $facebook->api('/' . $event_id);
+        $this->event_data = $this->facebook->api('/' . $event_id);
         
         if($this->event_data){
             return true;
@@ -82,8 +85,10 @@ class eventModel extends genericModel{
     
     /** function adds event to the apps event database */
     public function add($event_id){
+        $this->event_id = $event_id;
+        
         // does event exist on fb?
-        if(!$this->load($event_id)){
+        if(!$this->load($event_id) ){
             //if no return false
             return false;
         }

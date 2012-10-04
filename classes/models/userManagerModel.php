@@ -10,7 +10,7 @@ class userMangerModel extends genericModel{
         $res = $this->_db->raw('SELECT * FROM users');
         $data = $this->_db->res2data($res);
         
-        var_dump($data);
+        //var_dump($data);
         
         $this->users = $data;
     }
